@@ -1,0 +1,1297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aditya Kadam — AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0B0B0C;
+    --surface: #121214;
+    --surface-elevated: #18181B;
+    --border: #27272A;
+    --border-hover: #3F3F46;
+    --text-primary: #FFFFFF;
+    --text-secondary: #A1A1AA;
+    --text-muted: #71717A;
+    --accent-purple: #A78BFA;
+    --accent-purple-soft: rgba(167,139,250,0.08);
+    --accent-green: #34D399;
+    --accent-green-soft: rgba(52,211,153,0.08);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    position: fixed; top: 0; left: 0; width: 100%;
+    padding: 1.25rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: rgba(11,11,12,0.85);
+    backdrop-filter: blur(20px) saturate(1.2);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+  }
+
+  .nav-logo {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700; font-size: 1.05rem;
+    letter-spacing: -0.02em; color: var(--text-primary);
+  }
+
+  .nav-links {
+    display: flex; gap: 2.25rem; list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none; color: var(--text-muted);
+    font-size: 0.8rem; font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .nav-cta {
+    padding: 0.55rem 1.15rem;
+    background: var(--text-primary); color: var(--bg);
+    border: 1px solid var(--text-primary);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.78rem; font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .nav-cta:hover {
+    background: transparent; color: var(--text-primary);
+  }
+
+  /* ─── UTILITY ─── */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 3rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .section-label::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+  }
+
+  .section-title {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 8rem 3rem 4rem;
+    position: relative; z-index: 1;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 4rem;
+    align-items: start;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-label::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+  }
+
+  .hero-name {
+    font-family: 'Inter', sans-serif;
+    font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+  }
+  .hero-name .highlight {
+    background: linear-gradient(135deg, #C4B5FD, #A78BFA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 0.95rem; line-height: 1.75;
+    color: var(--text-secondary); max-width: 520px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: flex; gap: 0.75rem; flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.8rem 1.6rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem; font-weight: 500;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--text-primary); color: var(--bg);
+    border: 1px solid var(--text-primary);
+  }
+  .btn-primary:hover {
+    background: transparent; color: var(--text-primary);
+  }
+  .btn-ghost {
+    background: transparent; color: var(--text-secondary);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover {
+    border-color: var(--border-hover); color: var(--text-primary);
+  }
+
+  /* ─── HERO RIGHT: METRICS CARDS ─── */
+  .hero-right {
+    display: flex; flex-direction: column; gap: 1.25rem;
+    padding-top: 2rem;
+  }
+
+  .info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+    transition: border-color 0.2s ease;
+  }
+  .info-card:hover { border-color: var(--border-hover); }
+
+  .info-card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 1.25rem;
+  }
+  .info-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .info-card-location {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text-muted);
+  }
+
+  .info-card-role {
+    font-size: 0.85rem; color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+  }
+  .info-card-company {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  .info-card-desc {
+    font-size: 0.82rem; line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .metric-item {}
+  .metric-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+  .metric-label {
+    font-size: 0.65rem; color: var(--text-muted);
+    margin-top: 0.2rem;
+    line-height: 1.4;
+  }
+
+  /* Status Card */
+  .status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.75rem;
+  }
+  .status-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .status-card-label::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent-purple);
+    border-radius: 50%;
+  }
+
+  .status-indicator {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .status-dot {
+    width: 8px; height: 8px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  .status-text {
+    font-size: 1rem; font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .status-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .status-tag {
+    padding: 0.35rem 0.8rem;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    font-size: 0.72rem; color: var(--text-secondary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .status-link {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem; color: var(--accent-purple);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: gap 0.2s ease;
+  }
+  .status-link:hover { gap: 0.6rem; }
+
+  /* ─── SKILLS ─── */
+  #skills {
+    padding: 6rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .skills-header { max-width: 520px; margin-bottom: 3rem; }
+  .skills-header p {
+    font-size: 0.95rem; line-height: 1.7;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+  .skill-card:hover { border-color: var(--border-hover); }
+  .skill-card.wide { grid-column: span 2; }
+
+  .skill-cat {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .skill-cat-num {
+    color: var(--accent-purple);
+    font-weight: 500;
+  }
+  .skill-cat-divider {
+    color: var(--border-hover);
+  }
+
+  .skill-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+  }
+  .skill-tag {
+    padding: 0.4rem 0.85rem;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s ease;
+  }
+  .skill-tag:hover {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+  }
+
+  /* ─── PROJECTS ─── */
+  #projects {
+    padding: 6rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .projects-header { max-width: 520px; margin-bottom: 3rem; }
+  .projects-header p {
+    font-size: 0.95rem; line-height: 1.7;
+    color: var(--text-secondary);
+    margin-top: 0.75rem;
+  }
+
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: border-color 0.2s ease;
+  }
+  .project-card:hover { border-color: var(--border-hover); }
+
+  .project-inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+
+  .project-left {
+    padding: 2rem 2.5rem;
+    border-right: 1px solid var(--border);
+  }
+  .project-right {
+    padding: 2rem 2.5rem;
+  }
+
+  .project-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .project-label span {
+    color: var(--accent-purple);
+  }
+
+  .project-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+
+  .project-desc {
+    font-size: 0.88rem; line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .project-tech {
+    display: flex; flex-wrap: wrap; gap: 0.4rem;
+  }
+  .project-tech-tag {
+    padding: 0.3rem 0.7rem;
+    background: var(--surface-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.72rem; font-weight: 500;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .project-impact-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .project-impact-list {
+    list-style: none;
+  }
+  .project-impact-list li {
+    font-size: 0.85rem; line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: flex; align-items: flex-start; gap: 0.5rem;
+    padding-left: 0;
+  }
+  .project-impact-list li::before {
+    content: '•';
+    color: var(--accent-purple);
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: -1px;
+  }
+
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem; color: var(--accent-purple);
+    text-decoration: none;
+    margin-top: 1.5rem;
+    transition: gap 0.2s ease;
+  }
+  .project-link:hover { gap: 0.5rem; }
+
+  /* ─── EXPERIENCE ─── */
+  #experience {
+    padding: 6rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .experience-header { max-width: 520px; margin-bottom: 3rem; }
+
+  .exp-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .exp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 2.25rem;
+    transition: border-color 0.2s ease;
+  }
+  .exp-card:hover { border-color: var(--border-hover); }
+
+  .exp-card-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .exp-status-pill {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 0.7rem;
+    background: var(--accent-green-soft);
+    border: 1px solid rgba(52,211,153,0.15);
+    border-radius: 20px;
+    font-size: 0.65rem; color: var(--accent-green);
+    font-family: 'DM Mono', monospace;
+  }
+  .exp-status-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .exp-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.35rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+  }
+  .exp-company {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--accent-purple);
+    margin-bottom: 1rem;
+  }
+  .exp-desc {
+    font-size: 0.85rem; line-height: 1.75;
+    color: var(--text-secondary);
+  }
+
+  .edu-degree {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.2rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+  .edu-college {
+    font-size: 0.85rem; font-weight: 500;
+    color: var(--accent-purple);
+    margin-bottom: 0.75rem;
+  }
+  .edu-detail {
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    padding: 6rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .contact-left {}
+  .contact-left .section-title {
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    margin-bottom: 1rem;
+  }
+  .contact-left p {
+    font-size: 0.9rem; line-height: 1.75;
+    color: var(--text-secondary);
+    max-width: 420px;
+    margin-bottom: 2rem;
+  }
+
+  .contact-links {
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .contact-link {
+    display: flex; align-items: center; gap: 1rem;
+    padding: 1.1rem 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    text-decoration: none; color: var(--text-primary);
+    transition: all 0.2s ease;
+  }
+  .contact-link:hover {
+    border-color: var(--border-hover);
+    transform: translateX(4px);
+  }
+
+  .cl-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.6rem; font-weight: 400;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.2rem;
+  }
+  .cl-value {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--text-primary);
+  }
+  .cl-arrow {
+    margin-left: auto;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+  }
+  .contact-link:hover .cl-arrow {
+    color: var(--text-primary);
+    transform: translateX(2px);
+  }
+
+  .contact-right {}
+  .hire-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem 2.25rem;
+  }
+
+  .hire-status {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    background: var(--accent-green-soft);
+    border: 1px solid rgba(52,211,153,0.15);
+    border-radius: 20px;
+    font-size: 0.65rem; color: var(--accent-green);
+    font-family: 'DM Mono', monospace;
+    margin-bottom: 1.25rem;
+  }
+  .hire-status-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-green);
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  .hire-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem; font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+  }
+  .hire-desc {
+    font-size: 0.85rem; line-height: 1.75;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+  }
+
+  .hire-btn {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .hire-metrics {
+    display: flex; gap: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .hire-metric-value {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.4rem; font-weight: 700;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+  }
+  .hire-metric-label {
+    font-size: 0.65rem; color: var(--text-muted);
+    margin-top: 0.2rem;
+    line-height: 1.4;
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .footer-copy {
+    font-size: 0.75rem; color: var(--text-muted);
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-right { padding-top: 0; }
+    .project-inner { grid-template-columns: 1fr; }
+    .project-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .exp-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .skills-grid { grid-template-columns: 1fr; }
+    .skill-card.wide { grid-column: span 1; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 7rem 1.5rem 3rem; }
+    .container { padding: 0 1.5rem; }
+    .metrics-row { grid-template-columns: repeat(2, 1fr); }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; padding: 1.5rem; }
+    .project-left, .project-right { padding: 1.5rem; }
+    .exp-card { padding: 1.5rem; }
+    .hire-card { padding: 1.5rem; }
+  }
+</style>
+<base target="_blank">
+<base target="_blank">
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-logo">Aditya Kadam.</div>
+  <ul class="nav-links">
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:adityakadam2902@gmail.com" class="nav-cta">Hire me</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid">
+    <div class="hero-left">
+      <div class="hero-label">AI Engineer · Multi-Agent Systems · Enterprise AI Automation</div>
+      <h1 class="hero-name">
+        Aditya Kadam<br>
+        builds production <span class="highlight">AI systems.</span>
+      </h1>
+      <p class="hero-desc">
+        I design and ship production-grade multi-agent architectures, deterministic AI pipelines, enterprise ERP automation, and LLM-powered products using LangGraph, Google ADK, Agno, LangChain, FastAPI, and Docker. From n8n-to-ADK migrations to YOLO-based document detection pipelines — I turn complex AI ideas into reliable, observable systems that deliver measurable business impact.
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">View case studies →</a>
+        <a href="#contact" class="btn btn-ghost">Get in touch</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!-- Current Role Card -->
+      <div class="info-card reveal">
+        <div class="info-card-header">
+          <span class="info-card-label">Currently</span>
+          <span class="info-card-location">Kolhapur, IN</span>
+        </div>
+        <div class="info-card-role">AI Engineer Intern</div>
+        <div class="info-card-company">VSky Solutions</div>
+        <p class="info-card-desc">Leading enterprise AI automation — migrated production HR pipeline from n8n to Google ADK, built deterministic ATS scoring engines, YOLO-based receipt detection, and end-to-end ERP-integrated transaction automation.</p>
+        <div class="metrics-row">
+          <div class="metric-item">
+            <div class="metric-value">10+</div>
+            <div class="metric-label">Industry-Level<br>Projects</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">20+</div>
+            <div class="metric-label">Total<br>Projects</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">13+</div>
+            <div class="metric-label">Agentic<br>Frameworks</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-value">Live</div>
+            <div class="metric-label">Client<br>Deployments</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Status Card -->
+      <div class="status-card reveal">
+        <div class="status-card-label">Status</div>
+        <div class="status-indicator">
+          <div class="status-dot"></div>
+          <span class="status-text">Available for opportunities</span>
+        </div>
+        <div class="status-tags">
+          <span class="status-tag">B.Tech CSE · CGPA 9.5 · 2026</span>
+          <span class="status-tag">Full-time / Internship / Freelance</span>
+          <span class="status-tag">Remote / Relocate</span>
+        </div>
+        <a href="mailto:adityakadam2902@gmail.com" class="status-link">Start a conversation →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="skills-header reveal">
+      <div class="section-label">Capabilities</div>
+      <h2 class="section-title">Tech stack & specializations</h2>
+      <p>A focused toolkit for building reliable, agentic AI products end-to-end — from prototype to production deployment with deterministic evaluation and observable behavior.</p>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">01</span>
+          <span class="skill-cat-divider">—</span>
+          <span>Core Languages</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">TypeScript</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">REST APIs</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">02</span>
+          <span class="skill-cat-divider">—</span>
+          <span>AI & ML Frameworks</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">LangGraph</span>
+          <span class="skill-tag">Google ADK</span>
+          <span class="skill-tag">Agno</span>
+          <span class="skill-tag">LangChain</span>
+          <span class="skill-tag">DSPy</span>
+          <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">HuggingFace</span>
+          <span class="skill-tag">Scikit-learn</span>
+          <span class="skill-tag">OpenCV</span>
+          <span class="skill-tag">YOLO</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">03</span>
+          <span class="skill-cat-divider">—</span>
+          <span>LLMs & Inference</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Groq</span>
+          <span class="skill-tag">LiteLLM</span>
+          <span class="skill-tag">LLaMA 3.3 70B</span>
+          <span class="skill-tag">Qwen2.5-3B LoRA</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">Fine-Tuning</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">04</span>
+          <span class="skill-cat-divider">—</span>
+          <span>Backend & DevOps</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">FastAPI</span>
+          <span class="skill-tag">Flask</span>
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">SQLAlchemy</span>
+          <span class="skill-tag">Pydantic v2</span>
+          <span class="skill-tag">Docker</span>
+          <span class="skill-tag">AWS S3</span>
+          <span class="skill-tag">Git</span>
+        </div>
+      </div>
+
+      <div class="skill-card reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">05</span>
+          <span class="skill-cat-divider">—</span>
+          <span>Frontend</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">React</span>
+          <span class="skill-tag">Vue 3</span>
+          <span class="skill-tag">Quasar</span>
+          <span class="skill-tag">Vite</span>
+          <span class="skill-tag">Streamlit</span>
+          <span class="skill-tag">Bootstrap 5</span>
+        </div>
+      </div>
+
+      <div class="skill-card wide reveal">
+        <div class="skill-cat">
+          <span class="skill-cat-num">06</span>
+          <span class="skill-cat-divider">—</span>
+          <span>AI Specializations</span>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">Multi-Agent Orchestration</span>
+          <span class="skill-tag">Agentic RAG</span>
+          <span class="skill-tag">Deterministic Scoring</span>
+          <span class="skill-tag">Structured Outputs</span>
+          <span class="skill-tag">Evaluator Agents</span>
+          <span class="skill-tag">Feedback Categorization</span>
+          <span class="skill-tag">Hybrid Retrieval</span>
+          <span class="skill-tag">Cross-Encoder Reranking</span>
+          <span class="skill-tag">Computer Vision</span>
+          <span class="skill-tag">Object Detection</span>
+          <span class="skill-tag">Fraud Detection</span>
+          <span class="skill-tag">ERP Integration</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="projects-header reveal">
+      <div class="section-label">Work</div>
+      <h2 class="section-title">Featured projects</h2>
+      <p>Curated selection of 6 most impactful, production-grade AI systems built with deterministic evaluation, structured outputs, clean architecture, and measurable enterprise outcomes.</p>
+    </div>
+
+    <!-- Project 1: HR Screening / ATS Automation Tool -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 01</div>
+          <h3 class="project-title">HR Screening / ATS Automation Tool</h3>
+          <p class="project-desc">
+            A production AI-driven HR screening platform delivered as a Microsoft Outlook Add-in. Migrated from fragile n8n webhook chains to a fully custom Google ADK multi-agent system with deterministic scoring, multi-modal resume parsing, and bidirectional ERP integration — deployed live for enterprise clients.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">Google ADK</span>
+            <span class="project-tech-tag">Groq LLaMA 3.3 70B</span>
+            <span class="project-tech-tag">LiteLLM</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">Vue 3</span>
+            <span class="project-tech-tag">Quasar</span>
+            <span class="project-tech-tag">Pydantic v2</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>Led n8n-to-ADK migration — replaced fragile webhook chains with typed agents and structured handoff protocols</li>
+            <li>Built deterministic ATS scoring engine with weighted JSON config covering ~14 role profiles</li>
+            <li>Eliminated non-reproducible LLM scoring variance with formula-based feature matching</li>
+            <li>Multi-modal parsing: PDF, DOCX, and image resumes via python-docx + Groq vision model</li>
+            <li>Integrated with Meldep ERP REST APIs for bidirectional candidate data sync</li>
+            <li>Role-based access control gating agent-accessible endpoints per user</li>
+            <li>Vue 3/Quasar frontend with animated donut charts, skill breakdown chips, per-role recommendations</li>
+            <li>Consolidated 7 sequential dropdown API calls into single getAllDropdowns() endpoint</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2: Transaction Entry Automation System -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 02</div>
+          <h3 class="project-title">Transaction Entry Automation System</h3>
+          <p class="project-desc">
+            An enterprise-grade AI-powered ERP automation system that streamlines transaction entry by eliminating manual processing. Built multi-agent workflows for document extraction, data validation, and automated ERP record creation — achieving end-to-end automation from Outlook email to ERP database.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">LangChain</span>
+            <span class="project-tech-tag">LangGraph</span>
+            <span class="project-tech-tag">Agno</span>
+            <span class="project-tech-tag">PostgreSQL</span>
+            <span class="project-tech-tag">Pinecone</span>
+            <span class="project-tech-tag">Vue.js</span>
+            <span class="project-tech-tag">ERP</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>Built multi-agent workflows using LangChain, LangGraph, and Agno for intelligent task decomposition</li>
+            <li>Created scalable FastAPI services with PostgreSQL for persistent memory management and audit trails</li>
+            <li>Implemented document processing pipeline extracting structured data from PDFs and email attachments</li>
+            <li>Automated end-to-end workflow: Outlook → AI extraction → validation → ERP insertion</li>
+            <li>Reduced manual transaction processing time by eliminating human data entry bottlenecks</li>
+            <li>Pinecone vector store for semantic document retrieval and context-aware data extraction</li>
+            <li>Vue.js frontend for monitoring automation pipelines and reviewing extracted transactions</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3: Receipt Detection & Auto-Entry System -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 03</div>
+          <h3 class="project-title">Receipt Detection & Auto-Entry System</h3>
+          <p class="project-desc">
+            A computer vision + AI pipeline that detects and extracts key fields from physical receipts using YOLO-based object detection, then automatically processes and inserts the extracted data into ERP systems — replacing manual receipt entry entirely.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">YOLO</span>
+            <span class="project-tech-tag">OpenCV</span>
+            <span class="project-tech-tag">ERP Integration</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>Trained YOLO-based object detection model to detect and localize key receipt fields</li>
+            <li>Built end-to-end pipeline: image upload → detection → OCR extraction → ERP auto-insertion</li>
+            <li>Integrated ML model with FastAPI backend for real-time inference at scale</li>
+            <li>Improved data extraction accuracy over traditional OCR with domain-specific YOLO training</li>
+            <li>Reduced manual receipt processing time from minutes to seconds per document</li>
+            <li>Seamless ERP integration with structured payload mapping and validation</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 4: Clinical Trial Matcher -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 04</div>
+          <h3 class="project-title">Clinical Trial Matcher</h3>
+          <p class="project-desc">
+            A full-stack clinical intelligence system with a 6-agent LangGraph pipeline integrating real-world healthcare APIs for trial data retrieval, drug-interaction safety checks, and physician report generation. Built with DSPy-optimized prompts and hybrid semantic search.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">LangGraph</span>
+            <span class="project-tech-tag">DSPy</span>
+            <span class="project-tech-tag">Groq</span>
+            <span class="project-tech-tag">Qdrant</span>
+            <span class="project-tech-tag">PostgreSQL</span>
+            <span class="project-tech-tag">React</span>
+            <span class="project-tech-tag">TypeScript</span>
+            <span class="project-tech-tag">Docker</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>6-agent pipeline: data normalization, eligibility evaluation, drug-interaction checking, physician report generation</li>
+            <li>Integrated ClinicalTrials.gov, OpenFDA, and RxNorm APIs as external tools within the agent pipeline</li>
+            <li>DSPy-optimized prompt compilation improving structured output reliability for multi-hop clinical reasoning</li>
+            <li>Hybrid retrieval: Qdrant dense vectors + BM25 sparse + RRF fusion with cross-encoder reranking</li>
+            <li>Confidence-scored ranked trial matching with multi-document context and drug safety signals</li>
+            <li>React + TypeScript frontend for clinicians to query trials and compare drug interactions</li>
+            <li>Containerized FastAPI + PostgreSQL backend with Docker for consistent deployment</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 5: Self-Improving Agentic RAG -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 05</div>
+          <h3 class="project-title">Self-Improving Agentic RAG</h3>
+          <p class="project-desc">
+            A self-improving RAG system with a feedback loop that categorizes failures into retrieval vs. hallucination types and routes corrections to specialized repair agents. Features hybrid retrieval, cross-encoder reranking, and citation-backed answer verification.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">LangGraph</span>
+            <span class="project-tech-tag">LangChain</span>
+            <span class="project-tech-tag">Groq LLaMA 3.3</span>
+            <span class="project-tech-tag">ChromaDB</span>
+            <span class="project-tech-tag">BM25</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">Streamlit</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>Self-improvement feedback loop categorizing failures: retrieval failures vs. hallucination failures</li>
+            <li>Answer Verifier agent validates responses against retrieved sources before returning — reducing hallucinations</li>
+            <li>Citation-backed responses with source attribution for every generated answer</li>
+            <li>Hybrid retrieval: ChromaDB dense + BM25 sparse + RRF fusion with cross-encoder reranking</li>
+            <li>Specialized repair agents handle each failure category with targeted correction strategies</li>
+            <li>FastAPI backend with Streamlit frontend for interactive querying and feedback collection</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 6: Strategy Engine v2.0 -->
+    <div class="project-card reveal">
+      <div class="project-inner">
+        <div class="project-left">
+          <div class="project-label">Case Study <span>/</span> 06</div>
+          <h3 class="project-title">Strategy Engine v2.0</h3>
+          <p class="project-desc">
+            A 6-stage deterministic multi-agent AI pipeline that generates, scores, selects, and evaluates professional startup strategy reports. Each agent receives structured context and returns Pydantic v2-validated outputs ensuring schema consistency across the entire pipeline.
+          </p>
+          <div class="project-tech">
+            <span class="project-tech-tag">Python</span>
+            <span class="project-tech-tag">LangGraph</span>
+            <span class="project-tech-tag">Groq</span>
+            <span class="project-tech-tag">FastAPI</span>
+            <span class="project-tech-tag">Pydantic v2</span>
+            <span class="project-tech-tag">Loguru</span>
+            <span class="project-tech-tag">Pytest</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <div class="project-impact-label">Impact & Outcomes</div>
+          <ul class="project-impact-list">
+            <li>Planner agent — generates Conservative, Balanced, and Aggressive strategy variants</li>
+            <li>Scorer agent — evaluates each variant across 5 dimensions with deterministic scoring</li>
+            <li>Selector agent — picks the highest-scoring variant based on weighted criteria</li>
+            <li>Risk agent — LLM-powered risk assessment with severity ratings and mitigation plans</li>
+            <li>Evaluator agent — validates output quality, flags weak strategies for automatic re-planning</li>
+            <li>Report agent — synthesizes executive-grade final report with structured sections</li>
+            <li>Full Pytest coverage: agent logic, schema validation, end-to-end pipeline reliability</li>
+            <li>Exposed as async FastAPI REST service with Pydantic-validated request/response schemas</li>
+          </ul>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="project-link">View on GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="experience-header reveal">
+      <div class="section-label">Experience & Education</div>
+      <h2 class="section-title">Where I've shipped</h2>
+    </div>
+
+    <div class="exp-grid">
+      <!-- Experience Card -->
+      <div class="exp-card reveal">
+        <div class="exp-card-label">
+          <span>Current Role</span>
+          <span class="exp-status-pill">
+            <span class="exp-status-dot"></span>
+            Currently active
+          </span>
+        </div>
+        <div class="exp-role">AI Engineer Intern</div>
+        <div class="exp-company">VSky Solutions</div>
+        <p class="exp-desc">
+          Leading enterprise AI automation initiatives. Migrated a live HR automation pipeline from n8n to a fully custom Google ADK multi-agent system — designed agent boundaries, orchestration flow, and fallback logic from scratch. Built a deterministic formula-based ATS scoring engine replacing an inconsistent LLM scorer with weighted skill matching across ~14 role profiles. Architected a Transaction Entry Automation System with multi-agent workflows (LangChain, LangGraph, Agno) and end-to-end ERP integration. Developed a YOLO-based Receipt Detection & Auto-Entry System for real-time document processing. Extended multi-modal document parsing to PDF, DOCX, and image resumes. Integrated multi-agent backend with Meldep ERP REST APIs and implemented role-based access control. Consolidated 7 sequential dropdown API calls into a single getAllDropdowns() endpoint.
+        </p>
+      </div>
+
+      <!-- Education Card -->
+      <div class="exp-card reveal">
+        <div class="exp-card-label">
+          <span>Education</span>
+        </div>
+        <div class="edu-degree">B.Tech — Computer Science & Engineering</div>
+        <div class="edu-college">D.Y. Patil Agriculture and Technical University, Talsande</div>
+        <div class="edu-detail">CGPA: 9.5/10 · Final year · Expected graduation 2025–26</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-left reveal">
+        <div class="section-label">Contact</div>
+        <h2 class="section-title">Let's build something intelligent.</h2>
+        <p>Open to full-time AI Engineer roles, internships, and high-impact freelance projects in Generative AI, multi-agent systems, enterprise automation, and agentic RAG. I reply within 24 hours.</p>
+
+        <div class="contact-links">
+          <a href="mailto:adityakadam2902@gmail.com" class="contact-link">
+            <div>
+              <div class="cl-label">Email</div>
+              <div class="cl-value">adityakadam2902@gmail.com</div>
+            </div>
+            <div class="cl-arrow">→</div>
+          </a>
+          <a href="https://github.com/AdityaKadam2902" target="_blank" class="contact-link">
+            <div>
+              <div class="cl-label">GitHub</div>
+              <div class="cl-value">AdityaKadam2902</div>
+            </div>
+            <div class="cl-arrow">→</div>
+          </a>
+          <a href="https://www.linkedin.com/in/aditya-kadam-268304252" target="_blank" class="contact-link">
+            <div>
+              <div class="cl-label">LinkedIn</div>
+              <div class="cl-value">Aditya Kadam</div>
+            </div>
+            <div class="cl-arrow">→</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-right reveal">
+        <div class="hire-card">
+          <div class="hire-status">
+            <span class="hire-status-dot"></span>
+            Open to opportunities
+          </div>
+          <h3 class="hire-title">Ready to join your AI team.</h3>
+          <p class="hire-desc">
+            Final-year CSE student (CGPA 9.5) with hands-on experience shipping 10+ production-grade AI systems including enterprise ERP automation, multi-agent pipelines, deterministic scoring engines, YOLO-based computer vision, RAG systems, and fine-tuned LLM inference APIs. Looking for roles where I can help build the next generation of intelligent, observable, and reliable AI applications.
+          </p>
+          <a href="mailto:adityakadam2902@gmail.com" class="btn btn-primary hire-btn">Send me a message</a>
+          <div class="hire-metrics">
+            <div>
+              <div class="hire-metric-value">10+</div>
+              <div class="hire-metric-label">Industry-Level<br>Projects</div>
+            </div>
+            <div>
+              <div class="hire-metric-value">20+</div>
+              <div class="hire-metric-label">Total<br>Projects</div>
+            </div>
+            <div>
+              <div class="hire-metric-value">13+</div>
+              <div class="hire-metric-label">Agentic<br>Frameworks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">© 2025 Aditya Kadam. All rights reserved.</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
