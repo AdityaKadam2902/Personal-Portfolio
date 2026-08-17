@@ -1,0 +1,31 @@
+---
+slug: "hr-screening-ats"
+title: "HR Screening / ATS Automation"
+summary: "A production HR screening platform delivered as a Microsoft Outlook add-in — migrated from fragile n8n webhook chains to a custom Google ADK multi-agent system."
+employer: "VSky Solutions"
+status: "shipped"
+statusLabel: "Live client deployment"
+order: 2
+stack: ["Google ADK", "FastAPI", "Vue 3", "Quasar", "Pydantic v2", "n8n"]
+---
+
+## The problem
+
+VSky's HR screening tool started as a chain of n8n webhooks — workable at first, but brittle as the logic grew. Scoring behavior was inconsistent between runs, failure modes were hard to trace, and every new role category meant another fragile webhook branch.
+
+## What I built
+
+I led the migration from n8n's webhook chains to a fully custom Google ADK multi-agent system, replacing implicit webhook logic with typed agents and explicit structured handoff protocols between them — so a failure in one stage is traceable instead of silent.
+
+On top of that:
+
+- **Deterministic ATS scoring engine** — a three-layer skill-matching pipeline (normalization, synonym matching, fuzzy token matching) with a weighted config, replacing inconsistent LLM-scored variance with formula-based feature matching
+- **Multi-modal resume parsing** — PDF, DOCX, and image resumes handled through a unified pipeline
+- **Bidirectional ERP integration** for candidate data sync
+- **Role-based access control**, gating which endpoints each agent and user role can reach
+- **API consolidation** — collapsed 7 sequential dropdown API calls into a single endpoint, removing redundant round-trips on the add-in's initial load
+- A **Vue 3 / Quasar frontend** with an animated donut chart, skill-breakdown chips, and per-role recommendations rendered straight from the deterministic scoring API
+
+## Why it matters
+
+This is the project I'd point to for "can you take something fragile and make it dependable." The interesting decision wasn't picking a framework — it was replacing non-deterministic LLM scoring with a deterministic, explainable formula wherever consistency mattered more than flexibility, and reserving the LLM for the parts that genuinely needed judgment.

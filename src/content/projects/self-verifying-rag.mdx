@@ -1,0 +1,28 @@
+---
+slug: "self-verifying-rag"
+title: "Self-Verifying RAG"
+summary: "A reranking-focused RAG system with a self-improvement loop — categorizing failures into retrieval vs. hallucination and routing corrections to specialized repair agents."
+employer: "Independent"
+status: "research"
+statusLabel: "Personal project"
+order: 3
+stack: ["LangGraph", "LangChain", "DeepEval", "Ragas", "Hybrid Retrieval", "Cross-Encoder Reranking"]
+---
+
+## The problem
+
+Most RAG systems treat retrieval quality as fixed — you tune it once, ship it, and hope. I wanted a system that could tell the difference between "I retrieved the wrong thing" and "I retrieved the right thing but reasoned about it badly," and actually do something different for each.
+
+## What I built
+
+A RAG pipeline built around evaluation as a first-class part of the system, not an afterthought:
+
+- **Self-improvement feedback loop** — failures are categorized into retrieval failures versus hallucination failures, not lumped together
+- **Specialized repair agents** — each failure category gets routed to a correction strategy suited to it, instead of one generic retry
+- **Answer verification** — a dedicated verifier agent checks generated responses against retrieved sources before they're returned, with citation-backed attribution for every answer
+- **Hybrid retrieval** — dense embeddings combined with BM25 sparse retrieval, fused with reciprocal rank fusion, then refined with cross-encoder reranking
+- **Evaluation harness** — DeepEval and Ragas used to score retrieval and generation quality against a held-out set, so improvements are measured, not assumed
+
+## Why it matters
+
+This project is less about any single technique and more about treating "is this answer actually grounded?" as something the system checks on itself, rather than something a developer eyeballs in a demo. The categorization step — knowing *why* an answer failed before trying to fix it — is the part I'd defend hardest in an interview.

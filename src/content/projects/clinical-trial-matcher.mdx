@@ -1,0 +1,29 @@
+---
+slug: "clinical-trial-matcher"
+title: "Clinical Trial Matcher"
+summary: "A full-stack clinical intelligence system with a 6-agent LangGraph pipeline, integrating real healthcare APIs for trial matching, drug-interaction checks, and physician report generation."
+employer: "Independent"
+status: "research"
+statusLabel: "Personal project"
+order: 4
+stack: ["LangGraph", "DSPy", "Qdrant", "FastAPI", "React", "TypeScript", "Docker"]
+---
+
+## The problem
+
+Matching a patient to an eligible clinical trial means reconciling structured eligibility criteria, live external data sources, and drug-safety constraints — a task that's equal parts retrieval, reasoning, and correctness-checking, and one where a wrong answer has real consequences.
+
+## What I built
+
+A 6-agent LangGraph pipeline, each agent scoped to one part of the problem: data normalization, eligibility evaluation, drug-interaction checking, and physician report generation, among others.
+
+- **External API integration** — ClinicalTrials.gov, OpenFDA, and RxNorm wired in as tools the agent pipeline can call directly, not pre-fetched static data
+- **DSPy-optimized prompts** — prompt compilation tuned to improve structured-output reliability across multi-hop clinical reasoning, rather than hand-tuning prompts by trial and error
+- **Hybrid retrieval** — Qdrant dense vector search combined with BM25 sparse retrieval, fused with reciprocal rank fusion, then cross-encoder reranked
+- **Confidence-scored trial matching** — ranked results that combine multi-document context with drug-safety signals, not just similarity score
+- **React + TypeScript frontend** for clinicians to query trials and compare drug interactions directly
+- **Containerized backend** — FastAPI + PostgreSQL, Dockerized for consistent deployment
+
+## Why it matters
+
+High-stakes domains don't forgive a system that's "usually right." This project pushed me to treat every agent boundary as a place where correctness has to be checked, not assumed — which is the same discipline that shows up in my production work, just under a domain where getting it wrong actually costs something.

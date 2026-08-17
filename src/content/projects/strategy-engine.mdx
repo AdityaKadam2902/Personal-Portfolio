@@ -1,0 +1,31 @@
+---
+slug: "strategy-engine"
+title: "Strategy Engine v2.0"
+summary: "A 6-stage deterministic multi-agent pipeline that generates, scores, selects, and evaluates professional business strategy reports."
+employer: "Independent"
+status: "research"
+statusLabel: "Personal project"
+order: 5
+stack: ["LangGraph", "FastAPI", "Pydantic v2", "Pytest", "React"]
+---
+
+## The problem
+
+Ask an LLM for "a business strategy" and you'll get something plausible-sounding and unstructured — no way to compare options, no scoring rationale, no guarantee the output is even shaped the way your application expects. I wanted strategy generation that behaved like a pipeline, not a single unpredictable prompt.
+
+## What I built
+
+A 6-stage multi-agent pipeline, where every agent receives structured context and returns a Pydantic v2-validated output — so schema consistency holds across the entire pipeline, not just at the edges:
+
+- **Planner agent** — generates Conservative, Balanced, and Aggressive strategy variants
+- **Scorer agent** — evaluates each variant across five dimensions with deterministic scoring
+- **Selector agent** — picks the highest-scoring variant against weighted criteria
+- **Risk agent** — LLM-powered risk assessment with severity ratings and mitigation plans
+- **Evaluator agent** — validates output quality and flags weak strategies for automatic re-planning, closing the loop instead of shipping a first-pass answer
+- **Report agent** — synthesizes the final result into an executive-grade report with structured sections
+
+The whole thing is exposed as an async FastAPI service with Pydantic-validated request/response schemas, backed by full Pytest coverage across agent logic, schema validation, and end-to-end pipeline reliability.
+
+## Why it matters
+
+The evaluator-and-re-plan step is the part I care most about here: instead of trusting the first output a pipeline produces, the system checks its own work and loops back when quality doesn't clear the bar. That's the difference between "an agent pipeline" and "an agent pipeline you'd actually trust with something that matters."

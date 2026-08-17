@@ -1,0 +1,35 @@
+---
+slug: "sop-rag-assistant"
+title: "SOP RAG Assistant"
+summary: "A retrieval-augmented Q&A system that answers questions directly from internal SOP documents — shipped at VSky, now getting a more advanced personal successor."
+employer: "VSky Solutions"
+status: "adopted"
+statusLabel: "Adopted company-wide"
+order: 1
+stack: ["FastAPI", "Gemini", "PostgreSQL", "pgvector", "LangGraph", "JS Widget"]
+---
+
+## The problem
+
+Employees at VSky needed fast, accurate answers to procedural questions buried in long SOP documents — instead of searching through PDFs or interrupting someone who already knew the answer. The architecture direction came from a senior colleague; I owned the implementation end to end, backend and embeddable widget both.
+
+## What I built (v1 — shipped)
+
+A retrieval-augmented Q&A system, built on FastAPI and Gemini, with PostgreSQL and pgvector handling embedding storage and similarity search. Answers are grounded directly in the source SOP documents rather than the model's general knowledge, and the whole thing ships as a lightweight embeddable JS widget — so it can be dropped into any internal page without a separate app to maintain.
+
+This version was adopted into VSky's product line, not just used internally.
+
+## What I'm building now (v2 — personal, in progress)
+
+Using v1 as a foundation, I'm now developing a more advanced version on my own time, with:
+
+- **Six-outcome intention router** — instead of treating every query the same way, the pipeline classifies intent first and routes accordingly
+- **Two-layer semantic caching** — cuts redundant LLM calls for queries that are semantically similar to ones already answered
+- **Two-way answer verification** — a cross-document conflict check, plus a confidence-triggered pass that checks the written answer actually matches its own cited source
+- **In-process circuit breaker** around the LLM API, with failover state, so a provider hiccup degrades gracefully instead of taking the whole pipeline down
+
+It's built as an explicit LangGraph pipeline rather than an autonomous agent — every routing decision is a traceable step, not an emergent one.
+
+## Why it matters
+
+The gap between "a RAG demo that answers questions" and "a RAG system a company will actually put in front of employees" is almost entirely in the parts that aren't retrieval: routing, caching, verification, and failure handling. This project is that gap, worked through twice — once under real constraints at a company, once with more room to push further.
