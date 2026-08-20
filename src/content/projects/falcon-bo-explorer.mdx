@@ -1,0 +1,31 @@
+---
+slug: "falcon-bo-explorer"
+title: "FalconBOExplorer"
+summary: "A full-stack lineage tool that connects SAP BusinessObjects universe objects to their underlying physical database structures — in use by clients, not just internally."
+employer: "VSky Solutions"
+status: "shipped"
+statusLabel: "Live client deployment"
+order: 6
+stack: ["FastAPI", "Vue 3", "PostgreSQL", "Lazy-loaded trees", "SQL parsing"]
+---
+
+## The problem
+
+SAP BusinessObjects splits a universe's definition across two disconnected file types — BLX (the business-facing layer: folders, dimensions, measures, filters, calculated columns) and DFX (the physical layer: tables, columns, aliases, derived tables, contexts, joins). Finding out where a business object like "Customer Region" actually gets its data means manually opening BO Designer and cross-referencing both files by hand. FalconBOExplorer exists so nobody has to do that.
+
+## What I built
+
+A full-stack application that ingests BLX and DFX files (JSON, TXT, or PDF), auto-detects file type, extracts and stores the structure in PostgreSQL, and presents both layers together under one browsable universe.
+
+- **BLX-to-DFX data lineage** — the core feature: select any BLX object and the system traces it through to its backend table expression, the physical DFX table, the exact column, and every join involved
+- **Lazy-loaded tree browsing** — universes can be large, so the tree only loads what's in view instead of the whole structure at once
+- **Multi-mode search** — by universe, folder, object, table, or column, with filters and sorting to narrow results
+- **In-app metadata editing** — descriptions and other metadata can be updated directly, without touching the underlying BLX/DFX files or database schema
+- **Dual API surface** — the same backend serves both the web interface and AI/MCP tooling
+- Custom parsers (`dfx_extractor.py`, `extract_universe.py`) that turn raw BO exports into structured JSON, including join-graph traversal and a fix for multi-line SQL definitions that the naive parser split incorrectly
+
+I later led a full backend and frontend restructure — the backend into a layered FastAPI app (core, db, models, schemas, services, api/v1), and the frontend from a single bloated orchestrator component into 33 files across api, composables, components, and utils layers — with a hard constraint of zero database schema changes throughout.
+
+## Why it matters
+
+The genuinely hard part of this project isn't the CRUD — it's reconciling two different data models (business-layer BLX, physical-layer DFX) that were never meant to be queried together, while keeping the whole thing fast enough to browse interactively. It's now used by clients directly, not just as an internal documentation tool, which meant the lazy-loading and search performance work had to hold up outside of a controlled demo.

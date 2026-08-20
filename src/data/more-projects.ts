@@ -3,6 +3,7 @@ export type MoreProject = {
   description: string;
   stack: string[];
   employer: string;
+  status?: string;
   github?: string;
 };
 
@@ -13,19 +14,13 @@ export const moreProjects: MoreProject[] = [
       "Multi-agent ERP automation — Outlook email to AI extraction to validation to ERP insertion, end to end.",
     stack: ["LangChain", "LangGraph", "Agno", "Pinecone", "PostgreSQL"],
     employer: "VSky Solutions",
+    status: "Live client deployment",
   },
   {
     title: "Receipt Detection & Auto-Entry",
     description:
       "YOLO-based object detection pipeline that locates receipt fields and auto-inserts extracted data into ERP systems.",
     stack: ["YOLO", "OpenCV", "FastAPI"],
-    employer: "VSky Solutions",
-  },
-  {
-    title: "FalconBOExplorer",
-    description:
-      "Enterprise tool for navigating BI universe metadata — restructured from a JSON prototype into a layered, PostgreSQL-backed app.",
-    stack: ["FastAPI", "Vue 3", "PostgreSQL"],
     employer: "VSky Solutions",
   },
   {

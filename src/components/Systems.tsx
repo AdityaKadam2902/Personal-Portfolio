@@ -32,7 +32,12 @@ export default function Systems() {
                 className="border border-[var(--border-soft)] rounded-lg px-4 py-4 hover:border-[var(--border)] transition-colors"
               >
                 <div className="font-display text-[14.5px] font-semibold mb-1.5">{p.title}</div>
-                <p className="text-[var(--text-muted)] text-[12.5px] mb-3 leading-relaxed">
+                {p.status && (
+                  <span className="status-pill status-shipped mb-2" style={{ fontSize: "9px" }}>
+                    {p.status.toUpperCase()}
+                  </span>
+                )}
+                <p className="text-[var(--text-muted)] text-[12.5px] mb-3 leading-relaxed mt-1.5">
                   {p.description}
                 </p>
                 <div className="flex flex-wrap gap-1.5">
