@@ -17,7 +17,7 @@ export default function Nav() {
           <Link href="/#skills" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Skills</Link>
           <Link href="/#experience" className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors">Experience</Link>
           <a
-            href="/resume.pdf"
+            href="/Aditya_AI_Engineer.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="text-[13.5px] text-[var(--text-muted)] hover:text-[var(--text)] transition-colors"

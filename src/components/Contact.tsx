@@ -49,18 +49,18 @@ export default function Contact() {
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <path d="M14 2v6h6" />
                 </svg>
-                <span className="font-mono text-[12.5px] text-[var(--text-muted)]">resume.pdf</span>
+                <span className="font-mono text-[12.5px] text-[var(--text-muted)]">Aditya-Kadam-Resume</span>
               </div>
               <div className="flex gap-3">
                 <a
                   className="btn btn-ghost"
-                  href="/resume.pdf"
+                  href="/Aditya_AI_Engineer.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   View resume
                 </a>
-                <a className="btn btn-primary" href="/resume.pdf" download="Aditya-Kadam-Resume.pdf">
+                <a className="btn btn-primary" href="/Aditya_AI_Engineer.pdf" download="Aditya-Kadam-Resume.pdf">
                   Download ↓
                 </a>
               </div>
@@ -73,7 +73,6 @@ export default function Contact() {
         <div className="max-w-[1120px] mx-auto px-7 flex justify-between items-center flex-wrap gap-3">
           <span className="font-mono text-[11.5px] text-[var(--text-dim)]">© 2026 Aditya Kadam</span>
           <span className="font-mono text-[11.5px] text-[var(--text-dim)]">
-            BUILT WITH INTENT, NOT A TEMPLATE
           </span>
         </div>
       </footer>

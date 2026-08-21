@@ -1,28 +1,32 @@
 ---
 slug: "self-verifying-rag"
-title: "Self-Verifying RAG"
-summary: "A reranking-focused RAG system with a self-improvement loop — categorizing failures into retrieval vs. hallucination and routing corrections to specialized repair agents."
+title: "Self-Improving Agentic RAG"
+summary: "An enterprise-grade document intelligence platform — hybrid retrieval, cross-encoder reranking, answer verification, and a closed feedback loop that improves future retrieval and prompting quality."
 employer: "Independent"
 status: "research"
 statusLabel: "Personal project"
 order: 3
-stack: ["LangGraph", "LangChain", "DeepEval", "Ragas", "Hybrid Retrieval", "Cross-Encoder Reranking"]
+stack: ["LangGraph", "ChromaDB", "BM25", "Groq / Llama 3.3 70B", "RAGAS", "FastAPI", "React"]
 ---
 
 ## The problem
 
-Most RAG systems treat retrieval quality as fixed — you tune it once, ship it, and hope. I wanted a system that could tell the difference between "I retrieved the wrong thing" and "I retrieved the right thing but reasoned about it badly," and actually do something different for each.
+Most RAG systems treat retrieval quality as fixed — tuned once, shipped, and trusted from then on. I wanted a system that could tell *why* an answer went wrong (bad retrieval vs. bad reasoning over good retrieval), catch unsupported answers before returning them, and actually get better over time instead of staying static.
 
 ## What I built
 
-A RAG pipeline built around evaluation as a first-class part of the system, not an afterthought:
+A full-stack RAG platform with a clean separation between ingestion, retrieval, generation, verification, and improvement — orchestrated as an explicit LangGraph pipeline rather than a single opaque prompt:
 
-- **Self-improvement feedback loop** — failures are categorized into retrieval failures versus hallucination failures, not lumped together
-- **Specialized repair agents** — each failure category gets routed to a correction strategy suited to it, instead of one generic retry
-- **Answer verification** — a dedicated verifier agent checks generated responses against retrieved sources before they're returned, with citation-backed attribution for every answer
-- **Hybrid retrieval** — dense embeddings combined with BM25 sparse retrieval, fused with reciprocal rank fusion, then refined with cross-encoder reranking
-- **Evaluation harness** — DeepEval and Ragas used to score retrieval and generation quality against a held-out set, so improvements are measured, not assumed
+- **Hybrid retrieval** — dense vector search (ChromaDB) combined with BM25 sparse keyword search, merged via Reciprocal Rank Fusion to balance semantic and lexical recall
+- **Cross-encoder reranking** — retrieved chunks are rescored before generation to surface the strongest evidence, not just the first-pass matches
+- **Query understanding & rewriting** — intent and keywords are extracted before search runs, with learned keyword boosts applied on rewrite
+- **Answer verification** — a dedicated stage checks whether the generated answer is actually supported by the retrieved evidence, and can trigger regeneration when it isn't
+- **Self-improvement loop** — when a response is marked incorrect, the system classifies *why* (a retrieval failure vs. a generation failure) and updates retrieval or prompting strategy accordingly
+- **Full traceability** — every answer ships with source references, retrieval metadata, and pipeline diagnostics, not just a final string
+- **RAGAS evaluation harness** — tracks faithfulness, answer relevancy, context recall, context precision, and user-feedback accuracy over accumulated real feedback, not a one-time benchmark
+
+Backend on FastAPI, frontend on React with a chat interface, document upload, feedback controls, and a trace viewer so the pipeline's reasoning isn't a black box even to the person using it.
 
 ## Why it matters
 
-This project is less about any single technique and more about treating "is this answer actually grounded?" as something the system checks on itself, rather than something a developer eyeballs in a demo. The categorization step — knowing *why* an answer failed before trying to fix it — is the part I'd defend hardest in an interview.
+The self-improvement loop is the part I'd defend hardest: most "RAG projects" stop at generation. This one treats incorrect answers as training signal — classifying the failure mode first, then feeding that back into retrieval and prompting — which is the difference between a system that's tuned once and one that's designed to get better under real usage.

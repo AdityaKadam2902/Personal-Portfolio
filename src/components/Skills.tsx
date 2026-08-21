@@ -1,28 +1,38 @@
 const layers = [
   {
     index: "01",
-    name: "Orchestration",
-    items: ["LangGraph", "LangChain", "Agno", "Google ADK", "Multi-agent design"],
+    name: "Orchestration & Agents",
+    items: ["LangGraph", "LangChain", "Agno", "Google ADK", "Multi-agent design", "Tool/function calling"],
   },
   {
     index: "02",
-    name: "Retrieval & Grounding",
-    items: ["RAG", "pgvector", "Embeddings", "Gemini", "Source grounding"],
+    name: "Retrieval & RAG",
+    items: ["pgvector", "Qdrant", "Pinecone", "ChromaDB", "BM25 & hybrid retrieval", "Cross-encoder reranking"],
   },
   {
     index: "03",
-    name: "Backend & APIs",
-    items: ["FastAPI", "PostgreSQL", "REST APIs", "Flask"],
+    name: "LLMs & Fine-Tuning",
+    items: ["Gemini API", "Groq", "LiteLLM", "Ollama", "Qwen2.5-3B (LoRA)", "DSPy"],
   },
   {
     index: "04",
-    name: "Frontend",
-    items: ["Vue 3", "Quasar", "React"],
+    name: "Reliability & Evaluation",
+    items: ["Pydantic v2", "Ragas", "DeepEval", "Deterministic scoring", "Circuit breakers", "Pytest"],
   },
   {
     index: "05",
-    name: "Tooling & Ops",
-    items: ["n8n", "LangSmith", "Docker", "Pytest"],
+    name: "Computer Vision",
+    items: ["YOLO", "OpenCV", "CNNs", "VGG-16", "Scikit-learn"],
+  },
+  {
+    index: "06",
+    name: "Backend & Data",
+    items: ["FastAPI", "Flask", "PostgreSQL", "SQLAlchemy", "Redis", "SSE streaming", "Docker"],
+  },
+  {
+    index: "07",
+    name: "Frontend",
+    items: ["Vue 3", "Quasar", "React", "TypeScript"],
   },
 ];
 

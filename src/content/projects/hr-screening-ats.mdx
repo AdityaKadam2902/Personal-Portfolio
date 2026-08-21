@@ -25,6 +25,11 @@ On top of that:
 - **Role-based access control**, gating which endpoints each agent and user role can reach
 - **API consolidation** — collapsed 7 sequential dropdown API calls into a single endpoint, removing redundant round-trips on the add-in's initial load
 - A **Vue 3 / Quasar frontend** with an animated donut chart, skill-breakdown chips, and per-role recommendations rendered straight from the deterministic scoring API
+- Config-driven weighted matching across roughly **14 role profiles**, so adding a new role is a config change, not new code
+
+## The result
+
+Recruiter screening time on this tool went from **~20 minutes to under 45 seconds per candidate** — the direct result of replacing a variable, re-read-everything manual review with a deterministic score a recruiter can trust and act on immediately.
 
 ## Why it matters
 

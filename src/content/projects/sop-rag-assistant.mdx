@@ -27,8 +27,9 @@ Using v1 as a foundation, I'm now developing a more advanced version on my own t
 - **Two-layer semantic caching** — cuts redundant LLM calls for queries that are semantically similar to ones already answered
 - **Two-way answer verification** — a cross-document conflict check, plus a confidence-triggered pass that checks the written answer actually matches its own cited source
 - **In-process circuit breaker** around the LLM API, with failover state, so a provider hiccup degrades gracefully instead of taking the whole pipeline down
+- **Per-driver cost controls** — caching, token ceilings, and rate limiting tuned per model provider
 
-It's built as an explicit LangGraph pipeline rather than an autonomous agent — every routing decision is a traceable step, not an emergent one.
+It's built as an explicit LangGraph pipeline rather than an autonomous agent — every routing decision is a traceable step, not an emergent one. (This is a separate system from my other RAG project, [Self-Improving Agentic RAG](/projects/self-verifying-rag) — that one focuses on hybrid retrieval and a self-improvement feedback loop; this one focuses on routing, caching, and failure resilience.)
 
 ## Why it matters
 
