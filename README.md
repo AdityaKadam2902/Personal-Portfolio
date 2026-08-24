@@ -4,7 +4,7 @@
 
 **Building production-grade agentic AI, RAG systems, and full-stack applications.**
 
-[![Portfolio](https://img.shields.io/badge/🌐_Live_Site-0B0F1A?style=for-the-badge&labelColor=0B0F1A&color=E8934A)](https://adityakadam.dev)
+[![Portfolio](https://img.shields.io/badge/🌐_Live_Site-0B0F1A?style=for-the-badge&labelColor=0B0F1A&color=E8934A)](https://personal-portfolio-beta-puce-35.vercel.app/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/aditya-kadam-268304252)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/AdityaKadam2902)
 [![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:adityakadam2902@gmail.com)
