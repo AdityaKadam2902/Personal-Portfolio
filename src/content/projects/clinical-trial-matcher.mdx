@@ -1,29 +1,38 @@
 ---
 slug: "clinical-trial-matcher"
 title: "Clinical Trial Matcher"
-summary: "A full-stack clinical intelligence system with a 6-agent LangGraph pipeline, integrating real healthcare APIs for trial matching, drug-interaction checks, and physician report generation."
+summary: "A 6-agent LangGraph pipeline over live ClinicalTrials.gov, OpenFDA, and RxNorm data — with a deterministic clinical rule engine that LLM output cannot override, FHIR R4-aligned schemas, and local-first inference so patient data never leaves the host."
 employer: "Independent"
 status: "research"
 statusLabel: "Personal project"
 order: 4
-stack: ["LangGraph", "DSPy", "Qdrant", "FastAPI", "React", "TypeScript", "Docker"]
+stack: ["LangGraph", "DSPy", "FastAPI", "PostgreSQL", "Ollama", "React + TypeScript", "Docker"]
+github: "https://github.com/AdityaKadam2902/clinical_trial_matcher"
 ---
 
 ## The problem
 
-Matching a patient to an eligible clinical trial means reconciling structured eligibility criteria, live external data sources, and drug-safety constraints — a task that's equal parts retrieval, reasoning, and correctness-checking, and one where a wrong answer has real consequences.
+Matching a patient to an eligible clinical trial means reconciling dense eligibility criteria, live external data sources, and drug-safety constraints — a task where a hallucinated "safe" result could enroll a real patient in a dangerous trial. Most LLM pipelines treat model confidence as truth; in a clinical context that's not a weakness, it's a disqualifier.
 
 ## What I built
 
-A 6-agent LangGraph pipeline, each agent scoped to one part of the problem: data normalization, eligibility evaluation, drug-interaction checking, and physician report generation, among others.
+A 6-agent LangGraph pipeline over a shared `PipelineState`, each agent scoped to one part of the problem:
 
-- **External API integration** — ClinicalTrials.gov, OpenFDA, and RxNorm wired in as tools the agent pipeline can call directly, not pre-fetched static data
-- **DSPy-optimized prompts** — prompt compilation tuned to improve structured-output reliability across multi-hop clinical reasoning, rather than hand-tuning prompts by trial and error
-- **Hybrid retrieval** — Qdrant dense vector search combined with BM25 sparse retrieval, fused with reciprocal rank fusion, then cross-encoder reranked
-- **Confidence-scored trial matching** — ranked results that combine multi-document context with drug-safety signals, not just similarity score
-- **React + TypeScript frontend** for clinicians to query trials and compare drug interactions directly
-- **Containerized backend** — FastAPI + PostgreSQL, Dockerized for consistent deployment
+1. **Profile Parser** — normalizes medications to RxNorm generics and extracts condition keywords
+2. **Trial Fetcher** — pulls actively-recruiting trials from the ClinicalTrials.gov v2 API (with an automatic fallback source), pre-filtering by status, location, and phase *before* any expensive model call
+3. **Eligibility Checker** — age window and eligible sex are parsed from the protocol and enforced **in code, before any model call**; remaining candidates are evaluated by DSPy `ChainOfThought` reasoning with typed, validated outputs
+4. **Drug Safety** — a deterministic rule engine (age, sex, pregnancy, allergies, renal/liver/cardiac contraindications) plus OpenFDA interaction checks
+5. **Ranker** — a transparent 0–100 weighted formula (eligibility 40%, safety 30%, phase 15%, enrollment 10%, recency 5%) — no LLM involved
+6. **Report Generator** — a physician-ready summary with strict clinical guardrails
+
+The safety architecture is the part I'd defend hardest:
+
+- **Hard walls the LLM cannot cross** — the pure-Python rule engine runs after eligibility inference but before ranking, and a critical violation excludes the trial regardless of what the model concluded. Every violation carries a `rule_id`, severity, and recommendation, traceable for compliance review.
+- **Honest uncertainty instead of confident fabrication** — inference is treated as a bounded resource: per-trial timeouts, a whole-pipeline budget, and a candidate cap. Any trial that doesn't get evaluated is returned as `NEEDS_REVIEW` with the reason stated — never dropped, never presented as a match.
+- **Local-first inference** — production configuration *rejects* non-local model providers at startup, so patient data stays on the host.
+
+The rest of the platform is built to the same standard: FHIR R4-aligned Pydantic schemas (Patient, Condition, MedicationStatement), async PostgreSQL with Alembic migrations, self-hosted JWT auth with Argon2 hashing, refresh-token rotation, and RBAC, Redis-backed rate limiting, JSON logs with secret redaction, Prometheus `/metrics`, and a Docker Compose deployment (API + PostgreSQL + Redis + Ollama). CI runs lint, types, migrations, tests, and image builds on every push.
 
 ## Why it matters
 
-High-stakes domains don't forgive a system that's "usually right." This project pushed me to treat every agent boundary as a place where correctness has to be checked, not assumed — which is the same discipline that shows up in my production work, just under a domain where getting it wrong actually costs something.
+The test suite is **82 tests that run fully offline** — API parsing, the rule engine, guardrail degradation, auth, RBAC, logging redaction, middleware — because a system this safety-critical has to be verifiable without touching a live model. This project is where my production discipline (determinism over model confidence, explicit failure states, audit trails) met a domain where getting it wrong actually costs something.

@@ -13,6 +13,7 @@ export type ProjectFrontmatter = {
   statusLabel: string;
   order: number;
   stack: string[];
+  github?: string;
 };
 
 export type ProjectListItem = ProjectFrontmatter;

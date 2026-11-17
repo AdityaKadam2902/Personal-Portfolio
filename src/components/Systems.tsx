@@ -31,7 +31,20 @@ export default function Systems() {
                 key={p.title}
                 className="border border-[var(--border-soft)] rounded-lg px-4 py-4 hover:border-[var(--border)] transition-colors"
               >
-                <div className="font-display text-[14.5px] font-semibold mb-1.5">{p.title}</div>
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <div className="font-display text-[14.5px] font-semibold">{p.title}</div>
+                  {p.github && (
+                    <a
+                      href={p.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-[9.5px] text-[var(--text-dim)] hover:text-[var(--signal)] transition-colors shrink-0"
+                      aria-label={`View source on GitHub: ${p.title}`}
+                    >
+                      ↗
+                    </a>
+                  )}
+                </div>
                 {p.status && (
                   <span className="status-pill status-shipped mb-2" style={{ fontSize: "9px" }}>
                     {p.status.toUpperCase()}

@@ -1,7 +1,7 @@
 ---
 slug: "sop-rag-assistant"
 title: "SOP RAG Assistant"
-summary: "A retrieval-augmented Q&A system that answers questions directly from internal SOP documents — shipped at VSky, now getting a more advanced personal successor."
+summary: "A retrieval-augmented Q&A system answering questions directly from internal SOP documents — independently designed, shipped end to end, and adopted into VSky's product line. Now the foundation for a more advanced personal successor."
 employer: "VSky Solutions"
 status: "adopted"
 statusLabel: "Adopted company-wide"
@@ -11,26 +11,21 @@ stack: ["FastAPI", "Gemini", "PostgreSQL", "pgvector", "LangGraph", "JS Widget"]
 
 ## The problem
 
-Employees at VSky needed fast, accurate answers to procedural questions buried in long SOP documents — instead of searching through PDFs or interrupting someone who already knew the answer. The architecture direction came from a senior colleague; I owned the implementation end to end, backend and embeddable widget both.
+Employees at VSky needed fast, accurate answers to procedural questions buried in long SOP documents — instead of searching through PDFs or interrupting someone who already knew the answer. I owned the implementation end to end: the retrieval backend, the grounding logic, and the embeddable widget that put it in front of employees.
 
-## What I built (v1 — shipped)
+## What I built
 
-A retrieval-augmented Q&A system, built on FastAPI and Gemini, with PostgreSQL and pgvector handling embedding storage and similarity search. Answers are grounded directly in the source SOP documents rather than the model's general knowledge, and the whole thing ships as a lightweight embeddable JS widget — so it can be dropped into any internal page without a separate app to maintain.
+A retrieval-augmented Q&A system built on FastAPI and Gemini, with PostgreSQL and pgvector handling embedding storage and similarity search:
 
-This version was adopted into VSky's product line, not just used internally.
+- **Multi-outcome intent routing** — queries are classified first and routed through different pipeline paths, instead of treating every question the same way
+- **Metadata-based document selection** — the retriever narrows to the right SOPs using document metadata before touching the vector index
+- **Vector retrieval with LLM reranking** — candidate chunks are rescored by the model before generation, so answers are grounded in the strongest evidence rather than the first-pass matches
+- **Grounded generation with citations** — answers cite their source SOP sections, not the model's general knowledge
+- **Retrieval-audit logging and per-call token-usage tracking** — every retrieval decision and every token is attributable, which is what made cost and quality tunable after launch
+- **An embeddable JavaScript widget** — Shadow-DOM isolation means it works in React, Vue, or vanilla JS, mounted by any team with one script tag; bundled through a CI-ready esbuild pipeline
 
-## What I'm building now (v2 — personal, in progress)
-
-Using v1 as a foundation, I'm now developing a more advanced version on my own time, with:
-
-- **Six-outcome intention router** — instead of treating every query the same way, the pipeline classifies intent first and routes accordingly
-- **Two-layer semantic caching** — cuts redundant LLM calls for queries that are semantically similar to ones already answered
-- **Two-way answer verification** — a cross-document conflict check, plus a confidence-triggered pass that checks the written answer actually matches its own cited source
-- **In-process circuit breaker** around the LLM API, with failover state, so a provider hiccup degrades gracefully instead of taking the whole pipeline down
-- **Per-driver cost controls** — caching, token ceilings, and rate limiting tuned per model provider
-
-It's built as an explicit LangGraph pipeline rather than an autonomous agent — every routing decision is a traceable step, not an emergent one. (This is a separate system from my other RAG project, [Self-Improving Agentic RAG](/projects/self-verifying-rag) — that one focuses on hybrid retrieval and a self-improvement feedback loop; this one focuses on routing, caching, and failure resilience.)
+This version was adopted into VSky's product line — used by actual client deployments, not just internally.
 
 ## Why it matters
 
-The gap between "a RAG demo that answers questions" and "a RAG system a company will actually put in front of employees" is almost entirely in the parts that aren't retrieval: routing, caching, verification, and failure handling. This project is that gap, worked through twice — once under real constraints at a company, once with more room to push further.
+The gap between "a RAG demo that answers questions" and "a RAG system a company will actually put in front of employees" is almost entirely in the parts that aren't retrieval: routing, grounding, observability, and failure handling. Shipping this taught me where enterprise RAG actually breaks — and I'm now working through that gap a second time with more room to push, in the [Intent-Driven RAG System](/projects/intent-driven-rag).

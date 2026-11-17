@@ -1,32 +1,45 @@
 ---
 slug: "self-verifying-rag"
 title: "Self-Improving Agentic RAG"
-summary: "An enterprise-grade document intelligence platform — hybrid retrieval, cross-encoder reranking, answer verification, and a closed feedback loop that improves future retrieval and prompting quality."
+summary: "A production-hardened RAG platform with hybrid retrieval, CRAG quality gating, atomic claim-level NLI verification, and a closed-loop tuning engine — measured at 94% faithfulness vs. 71.4% for baseline RAG on a 50-sample golden benchmark."
 employer: "Independent"
 status: "research"
 statusLabel: "Personal project"
 order: 3
-stack: ["LangGraph", "ChromaDB", "BM25", "Groq / Llama 3.3 70B", "RAGAS", "FastAPI", "React"]
+stack: ["LangGraph", "ChromaDB", "BM25 + RRF", "Cross-encoder reranking", "NLI verification", "Groq / Llama 3.3 70B", "RAGAS", "FastAPI", "React"]
+github: "https://github.com/AdityaKadam2902/Self-Improving-Agentic-RAG"
 ---
 
 ## The problem
 
-Most RAG systems treat retrieval quality as fixed — tuned once, shipped, and trusted from then on. I wanted a system that could tell *why* an answer went wrong (bad retrieval vs. bad reasoning over good retrieval), catch unsupported answers before returning them, and actually get better over time instead of staying static.
+Most RAG systems execute a fixed vector search followed by unverified generation — tuned once, shipped, and trusted from then on. I wanted a system that could tell *why* an answer went wrong (bad retrieval vs. bad reasoning over good retrieval), refuse to ship unsupported claims, and actually get better over time instead of staying static.
+
+## Measured results
+
+Evaluated against a curated 50-sample enterprise golden benchmark, against a baseline RAG pipeline:
+
+- **Faithfulness (grounding): 94.0%** vs. 71.4% baseline — an enterprise SLA target of ≥90%
+- **Answer relevancy: 92.0%** vs. 78.2% — target ≥85%
+- **Context recall: 91.0%** vs. 68.5% — target ≥85%
+- **Context precision: 93.5%** vs. 72.1% — target ≥85%
+- **P95 single-hop latency: &lt;1,850 ms** vs. 3,850 ms baseline
+- **Semantic cache hits: &lt;40 ms** · **persistent BM25 lookups: &lt;2 ms** · **claim verification: &lt;250 ms**
 
 ## What I built
 
-A full-stack RAG platform with a clean separation between ingestion, retrieval, generation, verification, and improvement — orchestrated as an explicit LangGraph pipeline rather than a single opaque prompt:
+An 8-stage verified orchestration cycle, orchestrated with LangGraph so every routing decision is a traceable step rather than an emergent one:
 
-- **Hybrid retrieval** — dense vector search (ChromaDB) combined with BM25 sparse keyword search, merged via Reciprocal Rank Fusion to balance semantic and lexical recall
-- **Cross-encoder reranking** — retrieved chunks are rescored before generation to surface the strongest evidence, not just the first-pass matches
-- **Query understanding & rewriting** — intent and keywords are extracted before search runs, with learned keyword boosts applied on rewrite
-- **Answer verification** — a dedicated stage checks whether the generated answer is actually supported by the retrieved evidence, and can trigger regeneration when it isn't
-- **Self-improvement loop** — when a response is marked incorrect, the system classifies *why* (a retrieval failure vs. a generation failure) and updates retrieval or prompting strategy accordingly
-- **Full traceability** — every answer ships with source references, retrieval metadata, and pipeline diagnostics, not just a final string
-- **RAGAS evaluation harness** — tracks faithfulness, answer relevancy, context recall, context precision, and user-feedback accuracy over accumulated real feedback, not a one-time benchmark
+- **Ingress security** — deterministic prompt-injection defense (XML delimiting + adversarial pattern filtering), regex PII masking (SSNs, cards, keys, JWTs), and vector-level multi-tenant RBAC enforced through mandatory metadata query filters
+- **Economic routing** — an in-memory semantic cache (cosine similarity ≥ 0.96 resolves in &lt;40 ms, bypassing the LLM entirely), a token/cost budget controller with USD ceilings, and a 3-tier complexity router that separates direct, single-hop, and multi-hop queries
+- **Layout-aware ingestion** — PDF/DOCX/CSV/Markdown parsing that reconstructs tables into Markdown before chunking, plus contextual chunk breadcrumbs (document title, section headers, hierarchy) to prevent semantic drift during isolated vector lookups
+- **Hybrid retrieval** — dense vector search (ChromaDB) fused with a *persistent* inverted BM25 index via Reciprocal Rank Fusion (k=60), then cross-encoder neural reranking (ms-marco-MiniLM) — the persistent index avoids full-corpus re-indexing on every upload
+- **Corrective RAG (CRAG) quality gate** — retrieved context is classified as `CORRECT` (proceed), `AMBIGUOUS` (sentence-level noise filtering), or `INCORRECT` (explicit fallback with a caveat, never a confident guess)
+- **Atomic claim-level NLI verification** — the answer is decomposed into standalone propositional claims, each verified against the evidence via Natural Language Inference (`ENTAILED` / `CONTRADICTED` / `UNVERIFIABLE`), yielding an exact grounding score — and unsupported claims are **redacted from the final output**, not just flagged
+- **Self-improvement loop** — thumbs-down feedback is clustered by failure pattern (retrieval miss, hallucination, latency), hyperparameters (`top_k`, rerank thresholds, CRAG bounds) are re-tuned autonomously, and a regression gate validates every candidate against the golden benchmark — automatically rolling back if composite accuracy drops or the SLA is breached
+- **Full traceability** — every answer ships with span-level citation attribution, verified-claim lists, grounding scores, and pipeline diagnostics over SSE streaming
 
-Backend on FastAPI, frontend on React with a chat interface, document upload, feedback controls, and a trace viewer so the pipeline's reasoning isn't a black box even to the person using it.
+The frontend is a "glassbox" client: an interactive pipeline timeline showing all 8 stages in real time, and a telemetry dashboard with live RAG-triad scores, cache hit rates, and the currently promoted hyperparameter generation. Prometheus metrics are exposed on `/metrics`.
 
 ## Why it matters
 
-The self-improvement loop is the part I'd defend hardest: most "RAG projects" stop at generation. This one treats incorrect answers as training signal — classifying the failure mode first, then feeding that back into retrieval and prompting — which is the difference between a system that's tuned once and one that's designed to get better under real usage.
+The self-improvement loop is the part I'd defend hardest: most "RAG projects" stop at generation. This one treats incorrect answers as training signal — classifying the failure mode first, tuning against it, and gating the change behind a benchmark with automatic rollback so retrieval accuracy can never regress. Combined with claim-level verification that structurally removes unsupported statements before the user ever sees them, the difference is a system that's tuned once versus one that's designed to get better under real usage — and to prove it with numbers.

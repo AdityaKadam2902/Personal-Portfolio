@@ -1,0 +1,45 @@
+---
+slug: "intent-driven-rag"
+title: "Intent-Driven RAG System"
+summary: "An agentic SOP RAG system with a 6-way LangGraph intention router, follow-up resolution, hybrid retrieval on pgvector, and a versioned ingestion pipeline that swaps document chunks atomically in one transaction — tested against real PostgreSQL, not mocks."
+employer: "Independent"
+status: "research"
+statusLabel: "Personal project"
+order: 5
+stack: ["LangGraph", "PostgreSQL + pgvector", "Gemini", "Hybrid retrieval", "Pytest", "Atomic transactions"]
+github: "https://github.com/AdityaKadam2902/intent-driven-rag"
+---
+
+## The problem
+
+After shipping a production SOP RAG assistant at VSky, I knew exactly where the first version was weakest: ingestion treated documents as unstructured text, retrieval trusted a single vector search, and the pipeline couldn't handle follow-up questions that referenced the previous answer. I rebuilt those weaknesses as a separate system — with the discipline of proving every layer against a real database before calling it done.
+
+## What I built
+
+### Query-time pipeline
+
+A compiled LangGraph `StateGraph` — the six-way split is *provably* real, not just implied by a prompt:
+
+- **6-way intention router** — `classify_intention` is a graph node (one LLM call returning one of six labels), and a conditional-edge router function reads the label and picks the next node
+- **Follow-up resolution** — queries like "and what about the exception case?" are resolved against conversation context before retrieval runs
+- **Hybrid retrieval** — vector + keyword search fused over pgvector, tested against real local Postgres data, no mocking
+- **Cited answers with confidence scoring** — every synthesized answer carries its sources and a confidence level
+
+### Ingestion pipeline
+
+The ingestion side is engineered so SOP structure survives the trip into the database:
+
+- **Rule-unit chunking** — never splits a heading's bullet list from its lead-in sentence, never splits a numbered FAQ question from its answer; one known ambiguous case (3-level nesting in plain text) fails *safely* to a flatter label, never a broken chunk boundary
+- **Constrained entity tagging** — category and sub-category come straight from document metadata (zero AI cost, zero drift), and the model is constrained to a fixed `fine_grained_topics` vocabulary built from observed data — fixing casing drift and topic-invention bugs by design
+- **Structure-quality validation** — tested against deliberately messy vs. clean documents, not just happy-path fixtures
+- **Atomic version-swap** — a document update fully writes its new chunks before deleting the old version's, in one transaction; re-running ingestion on unchanged documents skips them, and version bumps replace chunks atomically (proven by a dedicated integration test)
+
+### Engineering discipline
+
+- Loader interface split (`BaseLoader` + implementations) so the real data-delivery mechanism can change without touching processors or beyond
+- 39 passing tests — integration tests run against real Postgres on purpose, because transaction/array/vector behavior is exactly what mocks hide bugs in
+- One deliberately paused component (fact extraction) — fully built and verified, then set aside to keep the core loop simple, with the decision documented rather than silently dropped
+
+## Why it matters
+
+This is the honest version of a "v2": every layer is proven against real Postgres before the next one is built, and the build status is documented truthfully rather than sold. The result is a question-to-answer loop that genuinely works end to end — routed, retrieved, cited, and versioned — built by someone who already shipped the production version once and knew exactly what to harden.

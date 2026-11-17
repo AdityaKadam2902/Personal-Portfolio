@@ -28,9 +28,9 @@ export default function Nav() {
         </nav>
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          <a href="/#contact" className="btn btn-ghost font-mono text-[12.5px]">
+          <Link href="/#contact" className="btn btn-ghost font-mono text-[12.5px]">
             Get in touch →
-          </a>
+          </Link>
         </div>
       </div>
     </header>

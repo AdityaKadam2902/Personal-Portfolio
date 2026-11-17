@@ -9,12 +9,30 @@ const statusClass: Record<string, string> = {
 
 export default function ProjectCard({ project }: { project: ProjectListItem }) {
   return (
-    <Link href={`/projects/${project.slug}`} className="card group">
+    <div className="card group relative">
+      <Link
+        href={`/projects/${project.slug}`}
+        className="absolute inset-0 z-0 rounded-[10px]"
+        aria-label={`Read case study: ${project.title}`}
+      />
       <div className="flex items-center justify-between mb-3.5">
         <span className={`status-pill ${statusClass[project.status]}`}>
           {project.statusLabel.toUpperCase()}
         </span>
-        <span className="font-mono text-[10.5px] text-[var(--text-dim)]">{project.employer}</span>
+        <span className="flex items-center gap-3">
+          {project.github && (
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative z-10 font-mono text-[10.5px] text-[var(--text-dim)] hover:text-[var(--signal)] transition-colors"
+              aria-label={`View source on GitHub: ${project.title}`}
+            >
+              SOURCE ↗
+            </a>
+          )}
+          <span className="font-mono text-[10.5px] text-[var(--text-dim)]">{project.employer}</span>
+        </span>
       </div>
       <div className="font-display text-[19px] font-semibold mb-2 group-hover:text-[var(--accent)] transition-colors">
         {project.title}
@@ -26,6 +44,6 @@ export default function ProjectCard({ project }: { project: ProjectListItem }) {
         ))}
       </div>
       <div className="mt-4 font-mono text-[12px] text-[var(--signal)]">Read case study →</div>
-    </Link>
+    </div>
   );
 }

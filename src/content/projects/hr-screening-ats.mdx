@@ -1,7 +1,7 @@
 ---
 slug: "hr-screening-ats"
 title: "HR Screening / ATS Automation"
-summary: "A production HR screening platform delivered as a Microsoft Outlook add-in — migrated from fragile n8n webhook chains to a custom Google ADK multi-agent system."
+summary: "The multi-agent backend for HR Lens (resume-checker, email-classifier, autofill agents) — migrated from fragile n8n webhook chains to a Google ADK multi-agent system with a deterministic scoring engine across ~14 role profiles, cutting recruiter screening from ~20 minutes to under 45 seconds per candidate."
 employer: "VSky Solutions"
 status: "shipped"
 statusLabel: "Live client deployment"
@@ -11,7 +11,7 @@ stack: ["Google ADK", "FastAPI", "Vue 3", "Quasar", "Pydantic v2", "n8n"]
 
 ## The problem
 
-VSky's HR screening tool started as a chain of n8n webhooks — workable at first, but brittle as the logic grew. Scoring behavior was inconsistent between runs, failure modes were hard to trace, and every new role category meant another fragile webhook branch.
+VSky's HR screening tool (HR Lens) started as a chain of n8n webhooks — workable at first, but brittle as the logic grew. Scoring behavior was inconsistent between runs, failure modes were hard to trace, and every new role category meant another fragile webhook branch. I architected the replacement multi-agent backend: resume-checker, email-classifier, and autofill agents.
 
 ## What I built
 

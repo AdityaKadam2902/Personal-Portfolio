@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -7,6 +8,20 @@ import { getProjectBySlug, getProjectSlugs } from "@/lib/projects";
 
 export function generateStaticParams() {
   return getProjectSlugs().map((slug) => ({ slug }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = getProjectBySlug(slug);
+  if (!project) return {};
+  return {
+    title: `${project.frontmatter.title} — Aditya Kadam`,
+    description: project.frontmatter.summary,
+  };
 }
 
 const statusClass: Record<string, string> = {
@@ -39,6 +54,16 @@ export default async function ProjectPage({
             {frontmatter.statusLabel.toUpperCase()}
           </span>
           <span className="font-mono text-[11px] text-[var(--text-dim)]">{frontmatter.employer}</span>
+          {frontmatter.github && (
+            <a
+              href={frontmatter.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[11px] text-[var(--signal)] hover:text-[var(--accent)] transition-colors"
+            >
+              View source ↗
+            </a>
+          )}
         </div>
 
         <h1 className="font-display font-semibold text-[32px] sm:text-[40px] leading-tight tracking-tight mt-4">

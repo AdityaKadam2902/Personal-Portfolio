@@ -2,37 +2,42 @@ const layers = [
   {
     index: "01",
     name: "Orchestration & Agents",
-    items: ["LangGraph", "LangChain", "Agno", "Google ADK", "Multi-agent design", "Tool/function calling"],
+    items: ["LangGraph", "LangChain", "Agno", "Google ADK", "MCP", "A2A protocol", "Multi-agent design", "Tool/function calling"],
   },
   {
     index: "02",
     name: "Retrieval & RAG",
-    items: ["pgvector", "Qdrant", "Pinecone", "ChromaDB", "BM25 & hybrid retrieval", "Cross-encoder reranking"],
+    items: ["pgvector", "ChromaDB", "Qdrant", "Pinecone", "Hybrid search (BM25 + dense)", "Reciprocal Rank Fusion", "Cross-encoder reranking", "Grounded generation & citations"],
   },
   {
     index: "03",
     name: "LLMs & Fine-Tuning",
-    items: ["Gemini API", "Groq", "LiteLLM", "Ollama", "Qwen2.5-3B (LoRA)", "DSPy"],
+    items: ["Gemini API", "Groq", "LiteLLM", "Ollama", "Hugging Face", "Qwen2.5-3B (LoRA)", "DSPy", "Prompt engineering"],
   },
   {
     index: "04",
-    name: "Reliability & Evaluation",
-    items: ["Pydantic v2", "Ragas", "DeepEval", "Deterministic scoring", "Circuit breakers", "Pytest"],
+    name: "Evaluation, Safety & Observability",
+    items: ["RAGAS", "LangSmith", "Hallucination detection", "Guardrails", "Deterministic validation", "Retrieval-audit logging", "Token-usage tracking", "Prometheus metrics"],
   },
   {
     index: "05",
-    name: "Computer Vision",
-    items: ["YOLO", "OpenCV", "CNNs", "VGG-16", "Scikit-learn"],
+    name: "Backend & Data",
+    items: ["FastAPI", "Flask", "PostgreSQL", "SQLAlchemy", "Alembic", "Pydantic v2", "Redis", "SSE streaming", "JWT"],
   },
   {
     index: "06",
-    name: "Backend & Data",
-    items: ["FastAPI", "Flask", "PostgreSQL", "SQLAlchemy", "Redis", "SSE streaming", "Docker"],
+    name: "Cloud & DevOps",
+    items: ["AWS (S3 · EC2 · Lambda · IAM · CloudWatch)", "Docker", "Docker Compose", "Kubernetes", "GitHub Actions CI/CD"],
   },
   {
     index: "07",
     name: "Frontend",
-    items: ["Vue 3", "Quasar", "React", "TypeScript"],
+    items: ["Vue 3", "Quasar", "React", "TypeScript", "Vite", "esbuild"],
+  },
+  {
+    index: "08",
+    name: "ML & Computer Vision",
+    items: ["TensorFlow", "Keras", "CNNs (VGG-16)", "YOLO", "OpenCV", "Scikit-learn"],
   },
 ];
 

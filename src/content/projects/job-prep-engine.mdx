@@ -1,0 +1,29 @@
+---
+slug: "job-prep-engine"
+title: "Job Prep Engine"
+summary: "A fine-tuned Qwen2.5-3B model (LoRA adapter, served via Ollama for low-latency CPU inference) behind a FastAPI SSE backend — with an intent router that sends salary-negotiation, resume-review, and interview-prep queries down distinct reasoning paths."
+employer: "Independent"
+status: "research"
+statusLabel: "Personal project"
+order: 6
+stack: ["Qwen2.5-3B", "LoRA", "Ollama", "FastAPI (SSE)", "React + Vite", "BitsAndBytes NF4"]
+github: "https://github.com/AdityaKadam2902/job-prep-engine"
+---
+
+## The problem
+
+Career guidance is a domain where one generic prompt produces generic output: interview prep, resume review, and salary negotiation need different reasoning, different structure, and different tone. I wanted a single fine-tuned model serving all of them — on modest hardware, with real-time streaming, and without a cloud dependency.
+
+## What I built
+
+- **Fine-tuning** — a rank-16 LoRA adapter on Qwen2.5-3B targeting the `q_proj` and `v_proj` attention layers, with proper ChatML formatting via `apply_chat_template`, and optional 4-bit NF4 quantization for GPU-constrained environments
+- **Dual inference backends** — Ollama (llama.cpp-based, 5–10x faster on CPU) as the primary engine with a HuggingFace Transformers fallback for GPU environments; the loader picks whichever backend is available
+- **Intent routing** — a multi-pattern classifier routes each query across 5 career domains (interview prep, resume optimization, study planning, project ideation, salary negotiation), appending task-specific formatting instructions and falling back to a `general` intent gracefully
+- **Real-time SSE streaming** — token-by-token delivery with sub-50ms first-token latency on Ollama, 6-turn session memory with server-side session tracking, and a client-side `AbortController` stop control that cancels in-flight generation mid-stream
+- **A debugging story I'm actually proud of** — fixed CPU model-loading hangs and response truncation by tuning the streaming lifecycle end to end: the failure wasn't in the model or the server, it was in how the SSE connection, generator, and model lifecycle interacted
+
+The React + Vite client has a custom markdown parser (headings, lists, code blocks, blockquotes), session persistence via headers, quick-action prompts, and a collapsible sidebar layout.
+
+## Why it matters
+
+Fine-tuning is easy to demo and hard to make pleasant: latency, truncation, and session state are where the real engineering is. This project taught me the full loop — training an adapter, choosing quantization, picking serving infrastructure for the hardware available, and then making the streaming experience feel instant instead of janky.
